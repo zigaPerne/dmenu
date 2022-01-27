@@ -1,0 +1,29 @@
+--- dmenu.c
++++ dmenu.c
+@@ -32,6 +32,7 @@ struct item {
+ 	char *text;
+ 	struct item *left, *right;
+ 	int out;
++	int index;
+ };
+ 
+ static char text[BUFSIZ] = "";
+@@ -540,6 +546,7 @@ readstdin(void)
+ 		if (!(items[i].text = strdup(buf)))
+ 			die("cannot strdup %u bytes:", strlen(buf) + 1);
+ 		items[i].out = 0;
++		items[i].index = i;
+ 		drw_font_getexts(drw->fonts, buf, strlen(buf), &tmpmax, NULL);
+ 		if (tmpmax > inputw) {
+ 			inputw = tmpmax;
+@@ -717,7 +724,9 @@ main(int argc, char *argv[])
+ 		else if (!strcmp(argv[i], "-i")) { /* case-insensitive item matching */
+ 			fstrncmp = strncasecmp;
+ 			fstrstr = cistrstr;
+-		} else if (i + 1 == argc)
++		} else if (!strcmp(argv[i], "-ix"))  /* adds ability to return index in list */
++			print_index = 1;
++		else if (i + 1 == argc)
+ 			usage();
+ 		/* these options take one argument */
+ 		else if (!strcmp(argv[i], "-l"))   /* number of lines in vertical list */

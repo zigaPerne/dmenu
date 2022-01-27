@@ -7,3 +7,4 @@ Personal dmenu build. Includes patches:
 * grid
 * gridnav
 * high-priority
+* print index
